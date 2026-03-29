@@ -83,32 +83,21 @@
   color: #fff;
 }
 
-.mobileToggle {
-  display: none;
-  background: none;
-  border: none;
-  color: var(--foreground);
-  cursor: pointer;
-  z-index: 102;
-  transition: var(--transition);
-}
-
 .mobileMenu {
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0;
   width: 100%;
   height: 100vh;
-  background: rgba(5, 2, 10, 0.98);
-  backdrop-filter: blur(20px);
+  background: #05020a; /* Opaque background */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
-  z-index: 101;
+  gap: 2.5rem;
+  z-index: 200; /* Much higher z-index */
   transform: translateX(100%);
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.4s ease;
   visibility: hidden;
 }
 
@@ -119,19 +108,19 @@
 
 .mobileLink {
   font-family: var(--font-playfair);
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 600;
+  color: #fff; /* Explicit white color */
   transition: var(--transition);
 }
 
 .mobileLink:hover {
   color: var(--primary);
-  letter-spacing: 2px;
 }
 
 .mobileBtn {
   background: linear-gradient(135deg, var(--primary), var(--accent));
-  color: #fff;
+  color: #fff !important;
   padding: 16px 40px;
   border-radius: 40px;
   font-weight: 600;
@@ -139,6 +128,17 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-top: 1rem;
+}
+
+.mobileToggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  z-index: 201; /* Above the overlay */
+  transition: var(--transition);
+  padding: 0.5rem;
 }
 
 @media (max-width: 992px) {
