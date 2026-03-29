@@ -33,12 +33,11 @@ export default function Navbar() {
           <Link href="/about" className={styles.link}>{t('nav.about')}</Link>
           <Link href="/classes" className={styles.link}>{t('nav.classes')}</Link>
           <Link href="/instructors" className={styles.link}>{t('nav.instructors')}</Link>
-          
+          <Link href="/contact" className={styles.btnNav}>{t('nav.bookNow')}</Link>
+
           <button onClick={toggleLanguage} className={styles.langToggle}>
             {language === 'en' ? 'EN | GR' : 'GR | EN'}
           </button>
-          
-          <Link href="/contact" className={styles.btnNav}>{t('nav.bookNow')}</Link>
         </div>
 
         {/* Mobile Toggle Button */}
