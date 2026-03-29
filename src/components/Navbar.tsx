@@ -21,10 +21,6 @@ export default function Navbar() {
   return (
     <nav className={styles.navbar}>
       <div className={styles.container}>
-        <button onClick={toggleLanguage} className={styles.langToggleMobile}>
-          {language === 'en' ? 'GR' : 'EN'}
-        </button>
-
         <div className={styles.logo}>
           <Link href="/">
             <span className={styles.neonText}>New Era</span> Polelad
@@ -54,6 +50,10 @@ export default function Navbar() {
 
         {/* Mobile Menu Overlay */}
         <div className={`${styles.mobileMenu} ${isOpen ? styles.active : ''}`}>
+          <button onClick={toggleLanguage} className={styles.langToggleMenu}>
+            {language === 'en' ? 'GR' : 'EN'}
+          </button>
+
           <Link href="/" className={styles.mobileLink} onClick={toggleMenu}>{t('nav.home')}</Link>
           <Link href="/about" className={styles.mobileLink} onClick={toggleMenu}>{t('nav.about')}</Link>
           <Link href="/classes" className={styles.mobileLink} onClick={toggleMenu}>{t('nav.classes')}</Link>
