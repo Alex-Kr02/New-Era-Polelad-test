@@ -36,7 +36,7 @@ export default function Navbar() {
           <Link href="/contact" className={styles.btnNav}>{t('nav.bookNow')}</Link>
 
           <button onClick={toggleLanguage} className={styles.langToggle}>
-            {language === 'en' ? 'EN | GR' : 'GR | EN'}
+            {language === 'en' ? 'GR' : 'EN'}
           </button>
         </div>
 
