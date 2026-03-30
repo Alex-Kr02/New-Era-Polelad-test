@@ -50,6 +50,18 @@ export default function Contact() {
                 </a>
               </p>
             </div>
+
+            <div className={`${styles.mapWrapper} animate-fade-in animate-delay-3`}>
+              <iframe
+                src={`https://www.google.com/maps?q=${encodeURIComponent('38°04\'08.5"N 23°48\'46.7"E')}&output=embed`}
+                width="100%"
+                height="250"
+                style={{ border: 0, borderRadius: '12px' }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
           </div>
 
           {/* Contact Form */}

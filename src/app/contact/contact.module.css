@@ -119,3 +119,26 @@
   background: var(--background);
   color: #fff;
 }
+
+.mapWrapper {
+  margin-top: 2rem;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.mapWrapper iframe {
+  display: block;
+}
+
+.link {
+  color: var(--primary);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.link:hover {
+  text-decoration: underline;
+  filter: brightness(1.2);
+}
