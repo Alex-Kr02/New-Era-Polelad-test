@@ -53,7 +53,7 @@ export default function Contact() {
 
             <div className={`${styles.mapWrapper} animate-fade-in animate-delay-3`}>
               <iframe
-                src={`https://www.google.com/maps?q=${encodeURIComponent('38°04\'08.5"N 23°48\'46.7"E')}&output=embed`}
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3141.5!2d23.8129799!3d38.0690321!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14a19f007e54ce47%3A0x3fbb60f5db7bc45b!2sNew%20era%20pole%20lab!5e0!3m2!1sen!2sgr!4v1711760000000"
                 width="100%"
                 height="250"
                 style={{ border: 0, borderRadius: '12px' }}
