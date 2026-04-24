@@ -1,20 +1,94 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useTranslation } from '@/hooks/useTranslation';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import styles from './page.module.css';
 
 import HeroBackground from '../components/HeroBackground';
 
+// Register GSAP plugin
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function Home() {
   const { t } = useTranslation();
   const heroRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    // 1. Hero Content Reveal
+    const heroTl = gsap.timeline();
+    heroTl.from(`.${styles.title}`, {
+      y: 100,
+      opacity: 0,
+      duration: 1.2,
+      ease: 'power4.out',
+    })
+    .from(`.${styles.subtitle}`, {
+      y: 50,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out',
+    }, '-=0.8')
+    .from(`.${styles.ctaContainer}`, {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power2.out',
+    }, '-=0.6');
+
+    // 2. Programs Section Reveal
+    gsap.from(`.${styles.sectionHeader}`, {
+      scrollTrigger: {
+        trigger: `.${styles.programs}`,
+        start: 'top 80%',
+      },
+      y: 50,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out'
+    });
+
+    // 3. Staggered Cards Reveal
+    gsap.from(`.glass-panel`, {
+      scrollTrigger: {
+        trigger: `.${styles.grid}`,
+        start: 'top 85%',
+      },
+      y: 60,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: 'back.out(1.7)'
+    });
+
+    // 4. Philosophy Section Reveal
+    gsap.from(`.${styles.philosophyContent} > *`, {
+      scrollTrigger: {
+        trigger: `.${styles.philosophy}`,
+        start: 'top 80%',
+      },
+      y: 40,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.3,
+      ease: 'power2.out'
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach(t => t.kill());
+    };
+  }, []);
 
   return (
-    <div className={styles.container}>
-      {/* Hero Section - The Runway (Relative for scroll tracking) */}
+    <div className={styles.container} ref={containerRef}>
+      {/* Hero Section - The Runway */}
       <section 
         ref={heroRef} 
         style={{ 
@@ -24,7 +98,6 @@ export default function Home() {
           background: '#000'
         }}
       >
-        {/* Sticky Container - The Visuals (Pinned to top) */}
         <div style={{ 
           position: 'sticky', 
           top: 0, 
@@ -36,18 +109,17 @@ export default function Home() {
           padding: '80px 10% 0',
           overflow: 'hidden'
         }}>
-
           <HeroBackground scrollTarget={heroRef} />
           
           <div className={styles.heroContent}>
             <h1 
-              className={`${styles.title} animate-fade-in`}
+              className={styles.title}
               dangerouslySetInnerHTML={{ __html: t('hero.title') }}
             />
-            <p className={`${styles.subtitle} animate-fade-in animate-delay-1`}>
+            <p className={styles.subtitle}>
               {t('hero.subtitle')}
             </p>
-            <div className={`${styles.ctaContainer} animate-fade-in animate-delay-2`}>
+            <div className={styles.ctaContainer}>
               <Link href="/classes" className="btn-primary">
                 {t('hero.cta')}
               </Link>
@@ -55,8 +127,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-
 
       {/* Featured Programs Section */}
       <section className={styles.programs}>
@@ -101,3 +171,4 @@ export default function Home() {
     </div>
   );
 }
+
