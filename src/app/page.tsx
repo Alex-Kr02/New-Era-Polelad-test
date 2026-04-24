@@ -1,31 +1,62 @@
 'use client';
 
+import { useRef } from 'react';
 import Link from 'next/link';
 import { useTranslation } from '@/hooks/useTranslation';
 import styles from './page.module.css';
 
+import HeroBackground from '../components/HeroBackground';
+
+
 export default function Home() {
   const { t } = useTranslation();
+  const heroRef = useRef<HTMLElement>(null);
 
   return (
     <div className={styles.container}>
-      {/* Hero Section */}
-      <section className={styles.hero}>
-        <div className={styles.heroContent}>
-          <h1 
-            className={`${styles.title} animate-fade-in`}
-            dangerouslySetInnerHTML={{ __html: t('hero.title') }}
-          />
-          <p className={`${styles.subtitle} animate-fade-in animate-delay-1`}>
-            {t('hero.subtitle')}
-          </p>
-          <div className={`${styles.ctaContainer} animate-fade-in animate-delay-2`}>
-            <Link href="/classes" className="btn-primary">
-              {t('hero.cta')}
-            </Link>
+      {/* Hero Section - The Runway (Relative for scroll tracking) */}
+      <section 
+        ref={heroRef} 
+        style={{ 
+          position: 'relative', 
+          width: '100%', 
+          height: 'calc(100vh + 900px)',
+          background: '#000'
+        }}
+      >
+        {/* Sticky Container - The Visuals (Pinned to top) */}
+        <div style={{ 
+          position: 'sticky', 
+          top: 0, 
+          width: '100%', 
+          height: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          padding: '80px 10% 0',
+          overflow: 'hidden'
+        }}>
+
+          <HeroBackground scrollTarget={heroRef} />
+          
+          <div className={styles.heroContent}>
+            <h1 
+              className={`${styles.title} animate-fade-in`}
+              dangerouslySetInnerHTML={{ __html: t('hero.title') }}
+            />
+            <p className={`${styles.subtitle} animate-fade-in animate-delay-1`}>
+              {t('hero.subtitle')}
+            </p>
+            <div className={`${styles.ctaContainer} animate-fade-in animate-delay-2`}>
+              <Link href="/classes" className="btn-primary">
+                {t('hero.cta')}
+              </Link>
+            </div>
           </div>
         </div>
       </section>
+
+
 
       {/* Featured Programs Section */}
       <section className={styles.programs}>

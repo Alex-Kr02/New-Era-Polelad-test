@@ -5,51 +5,45 @@
 }
 
 /* Hero Section */
-.hero {
-  min-height: calc(100vh - 80px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  padding: 2rem;
-  /* Add a subtle dark gradient to ensure text readability against background */
-  background: radial-gradient(circle at center, rgba(10, 10, 10, 0.4) 0%, rgba(5, 2, 10, 1) 100%);
-}
+/* Hero Section styles moved to inline in page.tsx for stability */
+
+
 
 .heroContent {
-  max-width: 800px;
-  text-align: center;
+  position: relative;
+  max-width: 600px;
+  text-align: left;
   z-index: 10;
 }
 
 .title {
   font-family: var(--font-playfair);
-  font-size: clamp(3rem, 8vw, 6rem);
-  line-height: 1.1;
+  font-size: clamp(3.5rem, 8vw, 6.5rem);
+  line-height: 1;
   font-weight: 700;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  color: #fff;
 }
 
 .title span {
   color: var(--primary);
-  text-shadow: 0 0 20px rgba(217, 70, 239, 0.6);
+  text-shadow: 0 0 30px rgba(217, 70, 239, 0.8);
 }
 
 .subtitle {
-  font-size: clamp(1.1rem, 2vw, 1.4rem);
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 2.5rem;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 3rem;
   line-height: 1.6;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 500px;
 }
 
 .ctaContainer {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 1.5rem;
 }
+
 
 /* Programs Section */
 .programs {

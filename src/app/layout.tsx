@@ -31,9 +31,10 @@ export default function RootLayout({
       <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
         <body className={inter.className}>
           <Navbar />
-          <main style={{ flex: 1, marginTop: "80px" }}>
+          <main style={{ flex: 1 }}>
             {children}
           </main>
+
           <Footer />
         </body>
       </html>
