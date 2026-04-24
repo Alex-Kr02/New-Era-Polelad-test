@@ -81,10 +81,30 @@ export default function Home() {
       ease: 'power2.out'
     });
 
+    // 5. Reviews Marquee
+    const marquee = document.querySelector(`.${styles.marqueeContent}`);
+    if (marquee) {
+      const w = marquee.scrollWidth / 2;
+      gsap.to(marquee, {
+        x: -w,
+        duration: 40,
+        ease: 'none',
+        repeat: -1,
+        onReverseComplete: () => {
+          gsap.set(marquee, { x: 0 });
+        }
+      });
+      
+      // Optional: Hover to slow down or pause
+      marquee.addEventListener('mouseenter', () => gsap.to(marquee, { timeScale: 0.2, duration: 0.5 }));
+      marquee.addEventListener('mouseleave', () => gsap.to(marquee, { timeScale: 1, duration: 0.5 }));
+    }
+
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
     };
   }, []);
+
 
   return (
     <div className={styles.container} ref={containerRef}>
@@ -168,7 +188,50 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      {/* Reviews Section - Sliding Marquee */}
+      <section className={styles.reviews}>
+        <h2 className={styles.sectionTitle} style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          What Our Students Say
+        </h2>
+        <div className={styles.marqueeContainer}>
+          <div className={styles.marqueeContent}>
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className={styles.reviewCard}>
+                <div className={styles.stars}>★★★★★</div>
+                <p className={styles.reviewText}>
+                  "The most empowering experience of my life. The instructors are professional, supportive, and truly know their art."
+                </p>
+                <div className={styles.reviewerInfo}>
+                  <div className={styles.reviewerAvatar} />
+                  <div>
+                    <h4 className={styles.reviewerName}>Elena S.</h4>
+                    <p className={styles.reviewerRole}>Advanced Student</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+            {/* Duplicate for seamless loop */}
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={`dup-${i}`} className={styles.reviewCard}>
+                <div className={styles.stars}>★★★★★</div>
+                <p className={styles.reviewText}>
+                  "The most empowering experience of my life. The instructors are professional, supportive, and truly know their art."
+                </p>
+                <div className={styles.reviewerInfo}>
+                  <div className={styles.reviewerAvatar} />
+                  <div>
+                    <h4 className={styles.reviewerName}>Elena S.</h4>
+                    <p className={styles.reviewerRole}>Advanced Student</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
+
 
