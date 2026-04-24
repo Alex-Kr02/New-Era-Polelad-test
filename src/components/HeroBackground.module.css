@@ -42,13 +42,15 @@
   align-items: center;
   z-index: 3;
   /* Multi-directional mask to fade left, top, and bottom edges seamlessly */
+  /* Using deeper gradients (30%/70%) to avoid "straight cuts" at the edges */
   mask-image: linear-gradient(to right, transparent, black 25%),
-              linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+              linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
   mask-composite: intersect;
   -webkit-mask-image: linear-gradient(to right, transparent, black 25%),
-                      linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+                      linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
   -webkit-mask-composite: source-in;
 }
+
 
 
 .animationCanvas {
