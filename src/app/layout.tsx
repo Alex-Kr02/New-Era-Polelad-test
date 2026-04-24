@@ -21,6 +21,8 @@ export const metadata: Metadata = {
   description: "Experience the art of exotic pole dancing at New Era Polelad. Premium classes, professional instructors, and an empowering community.",
 };
 
+import SmoothScroll from "@/components/SmoothScroll";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,14 +32,16 @@ export default function RootLayout({
     <LanguageProvider>
       <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
         <body className={inter.className}>
-          <Navbar />
-          <main style={{ flex: 1 }}>
-            {children}
-          </main>
-
-          <Footer />
+          <SmoothScroll>
+            <Navbar />
+            <main style={{ flex: 1 }}>
+              {children}
+            </main>
+            <Footer />
+          </SmoothScroll>
         </body>
       </html>
     </LanguageProvider>
   );
 }
+
