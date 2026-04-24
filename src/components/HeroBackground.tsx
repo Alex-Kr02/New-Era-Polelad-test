@@ -1,8 +1,14 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useScroll, useTransform, motion, useSpring } from 'framer-motion';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import styles from './HeroBackground.module.css';
+
+// Register GSAP plugin
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const FRAME_COUNT = 192;
 const BASE_PATH = '/images/ezgif-split/';
@@ -11,25 +17,6 @@ export default function HeroBackground({ scrollTarget }: { scrollTarget: React.R
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [images, setImages] = useState<HTMLImageElement[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  // Track scroll progress within the target container
-  const { scrollYProgress } = useScroll({
-    target: scrollTarget,
-    offset: ["start start", "end end"]
-  });
-
-  
-  // Smooth out the scroll value for ultra-premium feel
-  const smoothScroll = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
-
-  // Map scroll progress to frame index
-  // Limiting to 179 to avoid artifacts in frames 180-191
-  const frameIndex = useTransform(smoothScroll, [0, 1], [0, 179]);
-
 
   // Preload images
   useEffect(() => {
@@ -40,7 +27,7 @@ export default function HeroBackground({ scrollTarget }: { scrollTarget: React.R
       for (let i = 0; i < FRAME_COUNT; i++) {
         const p = new Promise<void>((resolve, reject) => {
           const img = new Image();
-          img.crossOrigin = 'anonymous'; // Prevent tainted canvas
+          img.crossOrigin = 'anonymous';
           const delay = (i - 2) % 6 === 0 ? '0.05s' : '0.04s';
           const filename = `frame_${i.toString().padStart(3, '0')}_delay-${delay}.gif`;
           img.src = `${BASE_PATH}${filename}`;
@@ -63,20 +50,22 @@ export default function HeroBackground({ scrollTarget }: { scrollTarget: React.R
     preloadImages();
   }, []);
 
-  // Draw current frame to canvas
+  // GSAP Scroll Animation
   useEffect(() => {
-    if (images.length === 0 || !canvasRef.current) return;
+    if (images.length === 0 || !canvasRef.current || !scrollTarget.current) return;
+
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d', { willReadFrequently: true });
+    if (!context) return;
+
+    // Proxy object for GSAP to animate
+    const animationObj = { frame: 0 };
 
     const render = () => {
-      const idx = Math.floor(frameIndex.get());
+      const idx = Math.floor(animationObj.frame);
       const image = images[idx];
-      if (!image) return;
-
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const context = canvas.getContext('2d', { willReadFrequently: true });
-      if (!context) return;
-
+      if (!image || !context) return;
+      
       context.clearRect(0, 0, canvas.width, canvas.height);
 
       const scale = Math.min(canvas.width / image.width, canvas.height / image.height);
@@ -86,47 +75,49 @@ export default function HeroBackground({ scrollTarget }: { scrollTarget: React.R
       const y = Math.floor((canvas.height / 2) - h / 2);
       
       context.drawImage(image, x, y, w, h);
-      
     };
 
-
-
-
-
-
-    const unsubscribe = frameIndex.on('change', () => {
-      render();
+    // Create the GSAP animation linked to scroll
+    const scrollAnimation = gsap.to(animationObj, {
+      frame: 179, // Stop at 179 to avoid artifacts as requested
+      snap: 'frame',
+      ease: 'none',
+      scrollTrigger: {
+        trigger: scrollTarget.current,
+        start: 'top top',
+        end: '+=900', // 900px scroll range
+        scrub: 1.2,   // This provides the "smoothing" lag for premium feel
+        markers: false
+      },
+      onUpdate: render
     });
-    
-    render();
 
     const handleResize = () => {
-      if (!canvasRef.current || !canvasRef.current.parentElement) return;
-      const parent = canvasRef.current.parentElement;
-      canvasRef.current.width = parent.clientWidth * window.devicePixelRatio;
-      canvasRef.current.height = parent.clientHeight * window.devicePixelRatio;
+      if (!canvas.parentElement) return;
+      const parent = canvas.parentElement;
+      canvas.width = parent.clientWidth * window.devicePixelRatio;
+      canvas.height = parent.clientHeight * window.devicePixelRatio;
       render();
     };
 
     window.addEventListener('resize', handleResize);
     handleResize();
 
+    // Initial render
+    render();
+
     return () => {
-      unsubscribe();
+      scrollAnimation.kill();
+      if (scrollAnimation.scrollTrigger) {
+        scrollAnimation.scrollTrigger.kill();
+      }
       window.removeEventListener('resize', handleResize);
     };
-  }, [images, frameIndex]);
-
+  }, [images, scrollTarget]);
 
   return (
     <div className={styles.container}>
-      <div className={styles.atmosphere} />
-      <div className={styles.smoke} />
       <div className={styles.vignette} />
-      <div className={styles.scanlines} />
-      
-      <div className={styles.chromePole} />
-
       <div className={styles.canvasWrapper}>
         <canvas
           ref={canvasRef}
@@ -171,5 +162,6 @@ export default function HeroBackground({ scrollTarget }: { scrollTarget: React.R
     </div>
   );
 }
+
 
 
